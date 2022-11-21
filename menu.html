@@ -4,12 +4,46 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://kit.fontawesome.com/b8fbbb41c1.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/b8fbbb41c1.js"
+      crossorigin="anonymous"
+    ></script>
     <title>Menu</title>
     <link href="menu.css" rel="stylesheet" />
   </head>
   <body>
-    <nav></nav>
+    <div class="nav-bar">
+      <nav class="nav-left">
+        <button>About</button>
+        <button>Contact</button>
+        <button>Help</button>
+        <button>FAQs</button>
+      </nav>
+      <div class="nav-right">
+        <ul>
+          <li>My Account <i class="fa-solid fa-caret-down"></i></li>
+          <li>USD <i class="fa-solid fa-caret-down"></i></li>
+          <li>EN <i class="fa-solid fa-caret-down"></i></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mid-bar">
+      <section>
+        <span>The <span>Face</span> Shop</span>
+      </section>
+      <section>
+        <form>
+        <input type="text" placeholder="Search for products here" name="Search" />
+        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </form>
+    </section>
+      <section>
+        <small>Customer Service</small>
+        <small>800 555</small>
+      </section>
+    </div>
+
     <div class="menu-bar">
       <div class="categ-menu">
         <ul class="list">
@@ -17,9 +51,9 @@
             Categories
             <i class="fa-solid fa-caret-down"></i>
             <ul class="categ-content">
-              <li>1</li>
-              <li>2</li>
-              <li>3</li>
+              <li>Skincare</li>
+              <li>Cosmetics</li>
+              <li>Body Care</li>
             </ul>
           </li>
         </ul>
@@ -35,10 +69,9 @@
       </div>
 
       <div class="icons">
-       <i class="fa-solid fa-heart"></i>
-      <i class="fa-solid fa-cart-shopping"></i>
-    </div>
-     
+        <i class="fa-solid fa-heart"></i>
+        <i class="fa-solid fa-cart-shopping"></i>
+      </div>
     </div>
   </body>
 </html>
