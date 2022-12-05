@@ -121,3 +121,48 @@ const remove = function (i) {
     display();
   }
 };
+
+//store cart items
+if (id in cart) {
+  cart[id].quantity++;
+} else {
+  let cartItem = {
+      productName: productName,
+      price: price,
+      quantity: 1
+  };
+  cart[id] = cartItem
+}
+
+//add to local storage
+localStorage.setItem("cart", JSON.stringify(cart));
+
+//create table rows
+let cart = {};
+if (localStorage.getItem("cart")) {
+  cart = JSON.parse(localStorage.getItem("cart"));
+}
+
+let tbody = document.getElementById("tbody");
+
+for (let id in cart) {
+    let item = cart[id];
+
+    let tr = document.createElement('tr')
+
+    let productName_td = document.createElement('td')
+    productName_td.textContent = item.productName
+    tr.appendChild(productName_td)
+
+
+    let price_td = document.createElement("td");
+    price_td.textContent = item.price;
+    tr.appendChild(price_td);
+
+    let quantity_td = document.createElement("td");
+    quantity_td.textContent = item.quantity;
+    tr.appendChild(quantity_td);
+
+    tbody.appendChild(tr)
+
+}
