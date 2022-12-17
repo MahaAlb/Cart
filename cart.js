@@ -1,10 +1,67 @@
 "use strict";
 let products = [];
 
-const addProduct = function () {
+const addProduct = function() {
   const productName = document.getElementById("product-name").value;
   const price = document.getElementById("price").value;
   const quantity = document.getElementById("quantity").value;
+  document.getElementById("products").innerHTML += getProductHTMLRow(productName, price, quantity)}
+
+// calculateShipping()
+// calculateSubTotal()
+// calculateTotal()
+
+const calculateSubTotal = () => {
+  const total_arr = documen.getElementsByClassName('product-total');
+  let total = 0;
+  total_arr.forEach( e => {
+    total += Number(e.innerHTML)
+  })
+  document.getElementById('sub-total').innerHTML = `$${total}`;
+}
+
+const calculateShipping = () => {
+  const total_arr = documen.getElementsByClassName('product-total');
+  document.getElementById("shipping").innerHTML = `$${total_arr.length * 10}`
+}
+
+const calculateTotal = () => {
+  const subTotal=document.getElementById('sub-total')
+  const shipping=document.getElementById('shipping')
+  document.getElementById('total'.innerHTML=`$${Number(subTotal)+Number(shipping)}`)
+}
+
+const getProductHTMLRow = (productName, price, quantity) => {
+return ` <tr>
+<td class="align-middle">${productName}</td>
+<td class="align-middle">USD ${price}</td>
+<td class="align-middle">
+  <div class="input-group quantity mx-auto" style="width: 100px">
+    <div class="input-group-btn">
+      <button type="button" class="btn btn-sm btn-primary btn-minus" onclick="decQuantity()">
+      -
+      </button>
+    </div>
+    <input
+      type="text"
+      class="form-control form-control-sm bg-secondary border-0 text-center"
+      value="${quantity}"
+    />
+    <div class="input-group-btn">
+      <button type="button" class="btn btn-sm btn-primary btn-plus" onclick="incQuantity()">
+        +
+      </button>
+    </div>
+  </div>
+</td>
+<td class="align-middle product-total">USD ${price * quantity}</td>
+<td class="align-middle">
+  <button class="btn btn-sm btn-danger" onclick="remove()">
+    <i class="fa fa-times"></i>
+  </button>
+</td>
+</tr>`;
+}
 
   if (!validateInputs(productName, price, quantity)) {
     alert("Invalid Inputs");
@@ -22,7 +79,6 @@ const addProduct = function () {
   products.push(product);
 
   display();
-};
 
 const display = function () {
   displayProducts();
@@ -68,6 +124,20 @@ const displayProducts = function () {
   });
 };
 
+const login = async () => {
+  let data = await fetch(`http://localhost:5000/api/users/login`,{
+    method: 'POST',
+    headers:{
+      'x-access-token': 'Bearer <token>',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({"email":"ramymibrahim@yahoo.com","password":"123456"})
+  })
+  let res = await data.json();
+  console.log(res);
+  localStorage.setItem("x-access-token",res.token)
+}
+
 const displaySubTotal = function () {
   document.getElementById("sub-total").innerHTML = `USD ${calculateSubTotal()}`;
 };
@@ -77,26 +147,9 @@ const displayShipping = function () {
   document.getElementById("shipping").innerHTML = `USD ${shipping}`;
 };
 
-const calculateSubTotal = function () {
-  let total = 0;
-  //   for (let i = 0; i < products.length; i++) {
-  //     total += products[i].total;
-  //   }
-  //continue
-  //break
-  products.forEach((p) => {
-    total += p.getTotal();
-  });
-  return total;
-};
-
 const displayTotal = function () {
   let total = calculateSubTotal() + calculateShipping();
   document.getElementById("total").innerHTML = `USD ${total}`;
-};
-
-const calculateShipping = function () {
-  return Math.round(calculateSubTotal() * 0.1);
 };
 
 const validateInputs = function (productName, price, quantity) {
@@ -106,63 +159,68 @@ const validateInputs = function (productName, price, quantity) {
 const decQuantity = function (i) {
   if (products[i].quantity > 1) {
     products[i].quantity -= 1;
+    localStorage.setItem("products", JSON.stringify(product));
     display();
   }
 };
 
 const incQuantity = function (i) {
   products[i].quantity = Number(products[i].quantity) + 1;
+  localStorage.setItem("products", JSON.stringify(product));
   display();
 };
 
 const remove = function (i) {
   if (confirm("Are you sure?")) {
     products.splice(i, 1);
+    localStorage.setItem("products", JSON.stringify(product));
     display();
   }
 };
 
-//store cart items
-if (id in cart) {
-  cart[id].quantity++;
-} else {
-  let cartItem = {
-      productName: productName,
-      price: price,
-      quantity: 1
-  };
-  cart[id] = cartItem
-}
+JSON.parse(localStorage.getItem("products") || "[]");
+// //store cart items
 
-//add to local storage
-localStorage.setItem("cart", JSON.stringify(cart));
+// let cart = {};
 
-//create table rows
-let cart = {};
-if (localStorage.getItem("cart")) {
-  cart = JSON.parse(localStorage.getItem("cart"));
-}
+// if (id in cart) {
+//   cart[id].quantity++;
+// } else {
+//   let cartItem = {
+//       productName: productName,
+//       price: price,
+//       quantity: 1
+//   };
+//   cart[id] = cartItem
+// }
 
-let tbody = document.getElementById("tbody");
+// //add to local storage
+// localStorage.setItem("cart", JSON.stringify(cart));
 
-for (let id in cart) {
-    let item = cart[id];
+// //create table rows
+// if (localStorage.getItem("cart")) {
+//   cart = JSON.parse(localStorage.getItem("cart"));
+// }
 
-    let tr = document.createElement('tr')
+// let product_tbody = document.getElementById("tbody");
 
-    let productName_td = document.createElement('td')
-    productName_td.textContent = item.productName
-    tr.appendChild(productName_td)
+// for (let id in cart) {
+//     let item = cart[id];
 
+//     let product_tr = document.createElement('tr')
 
-    let price_td = document.createElement("td");
-    price_td.textContent = item.price;
-    tr.appendChild(price_td);
+//     let productName_td = document.createElement('td')
+//     productName_td.textContent = item.productName
+//     product_tr.appendChild(productName_td)
 
-    let quantity_td = document.createElement("td");
-    quantity_td.textContent = item.quantity;
-    tr.appendChild(quantity_td);
+//     let price_td = document.createElement("td");
+//     price_td.textContent = item.price;
+//     product_tr.appendChild(price_td);
 
-    tbody.appendChild(tr)
+//     let quantity_td = document.createElement("td");
+//     quantity_td.textContent = item.quantity;
+//     product_tr.appendChild(quantity_td);
 
-}
+//     tbody.appendChild(product_tr)
+
+// }
